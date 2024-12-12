@@ -1,0 +1,51 @@
+# Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyo
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Django stuff:
+# Ignore database files (SQLite by default)
+db.sqlite3
+*.sqlite3
+
+# Ignore media and static directories
+media/
+static/
+
+# Django migrations folder (keeping migrations is generally recommended)
+*/migrations/
+
+# Ignore settings files with sensitive information
+# settings.py can contain sensitive information like SECRET_KEY
+# If you're using a separate settings file for production, ignore it as well.
+# settings.py
+
+# Ignore .env file with environment variables
+.env
+
+# Ignore log files
+*.log
+
+# Ignore coverage reports, testing, and other temporary files
+.coverage
+*.coverage
+nosetests.xml
+*.log
+*.pot
+
+# IDE and Editor files
+.vscode/
+.idea/
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
