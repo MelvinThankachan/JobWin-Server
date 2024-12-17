@@ -49,3 +49,7 @@ nosetests.xml
 
 # Windows system files
 Thumbs.db
+
+
+# My files
+todo.txt
