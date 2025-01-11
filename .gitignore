@@ -1,0 +1,64 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# Django specific files
+*.log
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# Virtual environment directories
+venv/
+.env/
+.venv/
+env/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+
+# IDE files (e.g., VS Code, PyCharm)
+.vscode/
+.idea/
+.sublime-project
+.sublime-workspace
+.atom/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+.coverage
+.coverage.*
+nosetests.xml
+test_coverage/
+
+# Django migrations
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Unit test directories
+test*/ 
+
+# Docker files (if applicable)
+docker-compose.override.yml
+Dockerfile
+*.dockerignore
+
+# Other
+*.sqlite3
+
+# Docker files
+*.dockerignore
+docker-compose.override.yml
+Dockerfile
+
+# My files
+test.py
