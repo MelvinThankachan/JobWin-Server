@@ -9,11 +9,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
         ("temporary", "Temporary"),
         ("candidate", "Candidate"),
-        ("employer", "Employer"),
-        ("admin", "Admin"),
+        ("company", "Company"),
     )
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="temporary")
+    is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -36,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.role == "candidate"
 
     @property
-    def is_employer(self):
+    def is_company(self):
         return self.role == "employer"
 
     @property

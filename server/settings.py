@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from datetime import timedelta
 
 
 load_dotenv()
@@ -22,8 +23,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # External
     "rest_framework",
+    "rest_framework_simplejwt",
     # Internal
     "accounts",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -80,6 +83,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
+    {
+        "NAME": "accounts.validators.CustomPasswordValidator",
+    },
 ]
 
 LANGUAGE_CODE = "en-us"
@@ -96,3 +102,22 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 AUTH_USER_MODEL = "accounts.User"
+
+# REST Framework config
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+}
+
+# JWT config
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", 300))
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME", 86400))
+    ),
+    "UPDATE_LAST_LOGIN": True,
+}

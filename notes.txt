@@ -1,0 +1,4 @@
+Generic Views
+    queryset
+    serializer_class
+    permission_classes

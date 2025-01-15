@@ -6,7 +6,7 @@ from .models import User
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User
-    list_display = ("email", "role", "is_active", "is_superuser")
+    list_display = ("email", "role", "is_active", "is_approved")
     list_filter = ("role", "is_active", "is_superuser")
     search_fields = ("email",)
     ordering = ("email",)
@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "role")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "role", "is_approved")}),
         ("Dates", {"fields": ("last_login", "created_at", "updated_at")}),
     )
 
