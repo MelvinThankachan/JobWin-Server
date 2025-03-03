@@ -24,12 +24,17 @@ INSTALLED_APPS = [
     # External
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
+    "corsheaders",
     # Internal
     "accounts",
     "api",
+    "candidate",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -100,8 +105,10 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 # Custom user model
 AUTH_USER_MODEL = "accounts.User"
+
 
 # REST Framework config
 REST_FRAMEWORK = {
@@ -111,6 +118,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+
 # JWT config
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(
@@ -119,5 +127,11 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(
         seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME", 86400))
     ),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
 }
+
+
+# CORS config
+CORS_ALLOW_ALL_ORIGINS = True

@@ -12,6 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def create(self, validated_data):
+        email = validated_data.get("email").lower()
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.set_password(password)
@@ -26,16 +27,32 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+    role = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        email = attrs.get("email")
+        email = attrs.get("email").lower()
         password = attrs.get("password")
-        if not User.objects.filter(email=email).exists():
-            raise serializers.ValidationError("Invalid email")
+        role = attrs.get("role")
 
-        user = authenticate(username=email, password=password)
-        if user is None:
-            raise serializers.ValidationError("Invalid password.")
+        user = User.objects.filter(email=email).first()
+        if not user:
+            raise serializers.ValidationError(
+                {"email": "User with this email does not exist"}
+            )
+
+        if not user.check_password(password):
+            raise serializers.ValidationError({"password": "Incorrect password"})
+
+        if user.role != role:
+            raise serializers.ValidationError({"role": "Invalid role for this user"})
+
+        if not user.is_active:
+            raise serializers.ValidationError({"email": "This account is inactive"})
+
+        if user.role == "company" and not user.is_approved:
+            raise serializers.ValidationError(
+                {"email": "Your account is pending approval"}
+            )
 
         attrs["user"] = user
         return attrs

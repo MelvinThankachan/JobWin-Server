@@ -18,11 +18,23 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
         "is_superuser",
         "role",
+        "email",
     )
 
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "role", "is_approved")}),
+        (None, {"fields": ("email",)}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "role",
+                    "is_approved",
+                )
+            },
+        ),
         ("Dates", {"fields": ("last_login", "created_at", "updated_at")}),
     )
 

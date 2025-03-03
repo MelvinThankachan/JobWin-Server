@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
         except ValidationError:
             raise ValueError("Invalid email address")
 
-    def _create_user(self, email, password=None, role="temporary"):
+    def _create_user(self, email, password=None, role="candidate"):
         if not email:
             raise ValueError("Users must have an email address")
         self.email_validator(email)

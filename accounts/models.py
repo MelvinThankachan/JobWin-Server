@@ -7,12 +7,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
 
     ROLE_CHOICES = (
-        ("temporary", "Temporary"),
+        # ("temporary", "Temporary"),
         ("candidate", "Candidate"),
         ("company", "Company"),
     )
 
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="temporary")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="candidate")
     is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
