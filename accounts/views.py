@@ -17,8 +17,8 @@ class UserSignupView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        if user.role == "candidate":
-            user.is_approved = True
+        if user.role == "employer":
+            user.is_active = False
             user.save()
 
         refresh = RefreshToken.for_user(user)
@@ -26,7 +26,12 @@ class UserSignupView(CreateAPIView):
 
         return Response(
             {
-                "user": serializer.data,
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "role": user.role,
+                    "is_active": user.is_active,
+                },
                 "refresh": str(refresh),
                 "access": str(access),
                 "message": "User created successfully",
@@ -52,9 +57,11 @@ class UserLoginView(GenericAPIView):
                     "id": user.id,
                     "email": user.email,
                     "role": user.role,
+                    "is_active": user.is_active,
                 },
                 "refresh": str(refresh),
                 "access": str(access),
+                "message": "Login successful",
             }
         )
 

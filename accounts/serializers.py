@@ -47,11 +47,8 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError({"role": "Invalid role for this user"})
 
         if not user.is_active:
-            raise serializers.ValidationError({"email": "This account is inactive"})
-
-        if user.role == "company" and not user.is_approved:
             raise serializers.ValidationError(
-                {"email": "Your account is pending approval"}
+                {"email": "This account is inactive, please contact the administrator"}
             )
 
         attrs["user"] = user

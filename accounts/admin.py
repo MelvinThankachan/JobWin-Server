@@ -6,7 +6,7 @@ from .models import User
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User
-    list_display = ("email", "role", "is_active", "is_approved")
+    list_display = ("email", "role", "is_active")
     list_filter = ("role", "is_active", "is_superuser")
     search_fields = ("email",)
     ordering = ("email",)
@@ -14,7 +14,6 @@ class CustomUserAdmin(UserAdmin):
         "last_login",
         "created_at",
         "updated_at",
-        "is_active",
         "is_staff",
         "is_superuser",
         "role",
@@ -31,7 +30,6 @@ class CustomUserAdmin(UserAdmin):
                     "is_staff",
                     "is_superuser",
                     "role",
-                    "is_approved",
                 )
             },
         ),
