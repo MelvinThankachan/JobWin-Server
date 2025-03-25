@@ -33,6 +33,7 @@ class LoginSerializer(serializers.Serializer):
         email = attrs.get("email").lower()
         password = attrs.get("password")
         role = attrs.get("role")
+        print("role", role)
 
         user = User.objects.filter(email=email).first()
         if not user:
