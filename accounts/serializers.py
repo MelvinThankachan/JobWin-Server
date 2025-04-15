@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, OTP
 from .validators import CustomPasswordValidator
 from django.contrib.auth import authenticate
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "email", "role", "password")
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def create(self, validated_data):
-        email = validated_data.get("email").lower()
+        validated_data["email"] = validated_data.get("email").lower()
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.set_password(password)
@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
 
-class LoginSerializer(serializers.Serializer):
+class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     role = serializers.CharField(write_only=True)
@@ -33,7 +33,6 @@ class LoginSerializer(serializers.Serializer):
         email = attrs.get("email").lower()
         password = attrs.get("password")
         role = attrs.get("role")
-        print("role", role)
 
         user = User.objects.filter(email=email).first()
         if not user:
@@ -54,3 +53,12 @@ class LoginSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    otp = serializers.CharField(min_length=6, max_length=6)
+
+    def validate_otp(self, value):
+        if not str(value).isdigit() or len(str(value)) != 6:
+            raise serializers.ValidationError("OTP must be a 6-digit number")
+        return value

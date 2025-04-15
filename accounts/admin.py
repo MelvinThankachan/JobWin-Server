@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, OTP
 
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User
-    list_display = ("email", "role", "is_active")
-    list_filter = ("role", "is_active", "is_superuser")
+    list_display = ("email", "role", "is_active", "is_verified")
+    list_filter = ("role", "is_active", "is_superuser", "is_verified")
     search_fields = ("email",)
     ordering = ("email",)
     readonly_fields = (
@@ -30,6 +30,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_staff",
                     "is_superuser",
                     "role",
+                    "is_verified",
                 )
             },
         ),
@@ -45,3 +46,9 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+
+@admin.register(OTP)
+class OTPAdmin(admin.ModelAdmin):
+    list_display = ("user", "otp", "expires_at", "generations")
+    readonly_fields = ("user", "otp", "expires_at")

@@ -129,18 +129,44 @@ REST_FRAMEWORK = {
 
 
 # JWT config
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(
-        seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", 300))
-    ),
-    "REFRESH_TOKEN_LIFETIME": timedelta(
-        seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME", 86400))
-    ),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": True,
-}
+if DEBUG:
+    SIMPLE_JWT = {
+        "ACCESS_TOKEN_LIFETIME": timedelta(seconds=30000),
+        "REFRESH_TOKEN_LIFETIME": timedelta(seconds=86400),
+        "ROTATE_REFRESH_TOKENS": True,
+        "BLACKLIST_AFTER_ROTATION": True,
+        "UPDATE_LAST_LOGIN": True,
+    }
+else:
+    SIMPLE_JWT = {
+        "ACCESS_TOKEN_LIFETIME": timedelta(
+            seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME", 300))
+        ),
+        "REFRESH_TOKEN_LIFETIME": timedelta(
+            seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME", 86400))
+        ),
+        "ROTATE_REFRESH_TOKENS": True,
+        "BLACKLIST_AFTER_ROTATION": True,
+        "UPDATE_LAST_LOGIN": True,
+    }
 
 
 # CORS config
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+# SMTP config
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "True"
+FROM_EMAIL = os.getenv("FROM_EMAIL")
+
+
+# OTP config
+OTP_EXPIRATION_TIME = 3  # in minutes
+OTP_MAX_GENERATIONS = 10 if DEBUG else 3
+OTP_COOL_DOWN_TIME = 30  # in minutes

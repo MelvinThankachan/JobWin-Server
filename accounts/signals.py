@@ -1,9 +1,12 @@
-from django.db.models.signals import pre_save
+from datetime import timezone
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import User
+from .models import OTP
 
 
-@receiver(pre_save, sender=User)
-def set_user(sender, instance, *args, **kwargs):
-    if instance.is_candidate and instance.is_employer:
-        raise ValueError("User can't be both candidate and employer")
+# @receiver(post_save, sender=OTP)
+# def delete_expired_otp(sender, instance, *args, **kwargs):
+#     expired_otps = OTP.objects.filter(
+#         cool_down_ends_at__lt=timezone.now() - timezone.timedelta(minutes=5)
+#     )
+#     expired_otps.delete()
