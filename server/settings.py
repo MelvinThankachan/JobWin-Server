@@ -125,13 +125,16 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
 }
 
 
 # JWT config
 if DEBUG:
     SIMPLE_JWT = {
-        "ACCESS_TOKEN_LIFETIME": timedelta(seconds=30000),
+        "ACCESS_TOKEN_LIFETIME": timedelta(seconds=300),
         "REFRESH_TOKEN_LIFETIME": timedelta(seconds=86400),
         "ROTATE_REFRESH_TOKENS": True,
         "BLACKLIST_AFTER_ROTATION": True,
@@ -167,6 +170,6 @@ FROM_EMAIL = os.getenv("FROM_EMAIL")
 
 
 # OTP config
-OTP_EXPIRATION_TIME = 3  # in minutes
-OTP_MAX_GENERATIONS = 10 if DEBUG else 3
+OTP_EXPIRATION_TIME = 2  # in minutes
+OTP_MAX_GENERATIONS = 100 if DEBUG else 3
 OTP_COOL_DOWN_TIME = 30  # in minutes

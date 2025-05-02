@@ -4,8 +4,9 @@ from .views import (
     UserSignupView,
     UserLoginView,
     UserLogoutView,
-    GenerateOTPView,
-    VerifyOTPView,
+    ValidateTokenView,
+    PublicVerifyOTPView,
+    ResendOTPView,
 )
 
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path("login/", UserLoginView.as_view(), name="user_login"),
     path("token-refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("logout/", UserLogoutView.as_view(), name="user_logout"),
-    path("generate-otp/", GenerateOTPView.as_view(), name="generate-otp"),
-    path("verify-otp/", VerifyOTPView.as_view(), name="verify-otp"),
+    path("validate-token/", ValidateTokenView.as_view(), name="validate-token"),
+    path("verify-otp/", PublicVerifyOTPView.as_view(), name="verify-otp"),
+    path("resend-otp/", ResendOTPView.as_view(), name="resend-otp"),
 ]

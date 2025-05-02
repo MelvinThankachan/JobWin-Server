@@ -5,6 +5,7 @@ from random import randint
 from django.utils import timezone
 from .utils import send_otp
 from django.conf import settings
+import secrets
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -50,6 +51,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 class OTP(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="otp")
     otp = models.PositiveIntegerField(null=True, blank=True)
+    verification_token = models.CharField(
+        max_length=64, unique=True, null=True, blank=True
+    )
     expires_at = models.DateTimeField(null=True, blank=True)
     generations = models.PositiveIntegerField(default=0)
     cool_down_ends_at = models.DateTimeField(null=True, blank=True, default=None)
@@ -74,6 +78,7 @@ class OTP(models.Model):
             self.cool_down_ends_at = None
 
         self.otp = randint(100000, 999999)
+        self.verification_token = secrets.token_urlsafe(32)
         self.expires_at = timezone.now() + timezone.timedelta(
             minutes=settings.OTP_EXPIRATION_TIME
         )
@@ -86,4 +91,7 @@ class OTP(models.Model):
         self.save()
 
     def check_otp(self, otp):
-        return self.otp == otp
+        try:
+            return int(self.otp) == int(otp)
+        except (ValueError, TypeError):
+            return False
