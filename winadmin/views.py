@@ -5,6 +5,7 @@ from .serializers import (
     CandidateListSerializer,
     EmployerListSerializer,
     UserActivationSerializer,
+    UserDetailSerializer,
 )
 from rest_framework.response import Response
 
@@ -18,6 +19,13 @@ class CandidateListView(generics.ListAPIView):
 class EmployerListView(generics.ListAPIView):
     queryset = User.objects.filter(role="employer")
     serializer_class = EmployerListSerializer
+    permission_classes = [IsAdminUser]
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+    lookup_field = "id"
     permission_classes = [IsAdminUser]
 
 

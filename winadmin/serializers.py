@@ -14,6 +14,12 @@ class EmployerListSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "created_at", "is_active", "is_verified"]
 
 
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "role", "created_at", "is_active", "is_verified"]
+
+
 class UserActivationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
