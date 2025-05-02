@@ -7,6 +7,7 @@ from .serializers import (
     UserLoginSerializer,
     PublicVerifyOTPSerializer,
     ResendOTPSerializer,
+    AdminLoginSerializer,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
@@ -174,6 +175,33 @@ class PublicVerifyOTPView(APIView):
                 "refresh": str(refresh),
                 "access": str(access),
                 "is_verified": True,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class AdminLoginView(GenericAPIView):
+    serializer_class = AdminLoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+        
+        # Clear any existing tokens for this user
+        OutstandingToken.objects.filter(user=user).delete()
+        
+        # Generate new JWT tokens
+        refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
+        user_object = get_user_object(user)
+
+        return Response(
+            {
+                "user": user_object,
+                "refresh": str(refresh),
+                "access": str(access),
+                "message": "Admin login successful",
             },
             status=status.HTTP_200_OK,
         )

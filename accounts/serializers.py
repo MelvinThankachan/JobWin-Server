@@ -107,3 +107,30 @@ class PublicVerifyOTPSerializer(serializers.Serializer):
 
 class ResendOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
+
+
+class AdminLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        email = attrs.get("email").lower()
+        password = attrs.get("password")
+
+        user = User.objects.filter(email=email).first()
+        if not user:
+            raise serializers.ValidationError(
+                {"email": "User with this email does not exist"}
+            )
+        
+        if user.role != "admin":
+            raise serializers.ValidationError(
+                {"email": "Access denied. Admin privileges required."}
+            )
+
+        if not user.check_password(password):
+            raise serializers.ValidationError({"password": "Incorrect password"})
+
+
+        attrs["user"] = user
+        return attrs

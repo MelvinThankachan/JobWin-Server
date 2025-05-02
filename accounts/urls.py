@@ -7,12 +7,14 @@ from .views import (
     ValidateTokenView,
     PublicVerifyOTPView,
     ResendOTPView,
+    AdminLoginView,
 )
 
 
 urlpatterns = [
     path("signup/", UserSignupView.as_view(), name="user_signup"),
     path("login/", UserLoginView.as_view(), name="user_login"),
+    path("admin-login/", AdminLoginView.as_view(), name="admin_login"),
     path("token-refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("logout/", UserLogoutView.as_view(), name="user_logout"),
     path("validate-token/", ValidateTokenView.as_view(), name="validate-token"),
